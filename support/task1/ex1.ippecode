@@ -1,0 +1,9 @@
+# Project introduction 1: Print numbers from 1 to 5 (using IPPeCode)
+MOV   n   0
+LABEL @START
+JUMPIFEQ  @END  n 5
+ADD n n 1
+PRINT n
+JUMP @START
+LABEL @END
+ 

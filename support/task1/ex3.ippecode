@@ -1,0 +1,12 @@
+# Simple example of a program in IPPeCode
+
+MOV counter 0
+READSTR Input
+LABEL @WHILE_
+JUMPIFEQ @End counter +3
+PRINT Input
+PRINT "\n"
+ADD counter  counter   1
+JUMP @WHILE_
+LABEL @End
+ 

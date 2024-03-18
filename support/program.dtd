@@ -1,0 +1,17 @@
+<!DOCTYPE program [ 
+  <!ELEMENT program (tac+)>
+  <!ELEMENT tac (dst?,src1?,src2?)>
+  <!ELEMENT dst (#PCDATA)>
+  <!ELEMENT src1 (#PCDATA)>
+  <!ELEMENT src2 (#PCDATA)>
+  <!ATTLIST program name CDATA #IMPLIED>
+  <!ATTLIST tac opcode CDATA #REQUIRED>
+  <!ATTLIST tac order CDATA #REQUIRED>
+  <!ATTLIST dst type (integer|string|variable|label) #REQUIRED>
+  <!ATTLIST src1 type (integer|string|variable) #REQUIRED>
+  <!ATTLIST src2 type (integer|string|variable) #REQUIRED>
+  <!ENTITY language "IPPeCode">
+  <!ENTITY eol "&#xA;">
+  <!ENTITY gt "&gt;">
+  <!ENTITY lt "&lt;">
+]>

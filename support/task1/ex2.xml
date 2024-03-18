@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE program [ 
+  <!ELEMENT program (tac+)>
+  <!ELEMENT tac (dst?,src1?,src2?)>
+  <!ELEMENT dst (#PCDATA)>
+  <!ELEMENT src1 (#PCDATA)>
+  <!ELEMENT src2 (#PCDATA)>
+  <!ATTLIST program name CDATA #IMPLIED>
+  <!ATTLIST tac opcode CDATA #REQUIRED>
+  <!ATTLIST tac order CDATA #REQUIRED>
+  <!ATTLIST dst type (integer|string|variable|label) #REQUIRED>
+  <!ATTLIST src1 type (integer|string|variable) #REQUIRED>
+  <!ATTLIST src2 type (integer|string|variable) #REQUIRED>
+  <!ENTITY language "IPPeCode">
+  <!ENTITY eol "&#xA;">
+  <!ENTITY lt "&lt;">
+  <!ENTITY gt "&gt;">
+]>
+<program name="Example 2 in &language;">
+  <tac opcode="READINT" order="1"><dst type="variable">y</dst></tac>
+  <tac opcode="ADD" order="2">
+    <dst type="variable">x1</dst>
+    <src1 type="variable">y</src1>
+    <src2 type="integer">10</src2>
+  </tac>
+  <tac opcode="PRINT" order="3"><src1 type="string">Hello&eol;World!</src1></tac>
+  <tac opcode="PRINT" order="4"><src1 type="variable">x1</src1></tac>
+  <tac opcode="PRINT" order="5">
+    <src1 type="string">&eol;</src1> 
+  </tac>
+</program>
