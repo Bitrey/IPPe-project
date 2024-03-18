@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from xml.sax.saxutils import escape
 import argparse
+import sys
 
 arg_parser = argparse.ArgumentParser(description='Tokenize a file')
 arg_parser.add_argument('input', type=str, help='File to tokenize')
@@ -39,6 +40,10 @@ actions = []
 def print_debug(*_args, **kwargs):
     if args.debug:
         print(*_args, **kwargs)
+
+def print_error(*_args, **kwargs):
+    print(*_args, file=sys.stderr, **kwargs)
+    sys.exit(1)
 
 # List of token names
 tokens = (
@@ -84,7 +89,7 @@ t_ignore = ' \t'
 # Error handling 
 def t_error(t):
     global flag_for_error
-    print("Illegal character: %r on line %d" % (repr(t.value[0]), t.lexer.lineno))
+    print_error("Illegal character: %r on line %d" % (repr(t.value[0]), t.lexer.lineno))
     flag_for_error = True
     t.lexer.skip(1)
 
@@ -121,9 +126,12 @@ def p_program(p):
         xml_str = minidom.parseString(ET.tostring(root, 'utf-8')).toprettyxml(indent="  ")
         xml_content = xml_declaration + doctype_declaration + xml_str.split('\n', 1)[1].replace('$language$', '&language;')
         print_debug(xml_content)
-        with open(args.output, 'w') as file:
-            print_debug(f"Writing to {args.output}")
-            file.write(xml_content)
+        if args.output != '-':
+            with open(args.output, 'w') as file:
+                print_debug(f"Writing to {args.output}")
+                file.write(xml_content)
+        else:
+            print(xml_content)
 
 def p_tac_list_1(p):
     'tac_list : tac tac_list'
@@ -176,7 +184,7 @@ def p_src2(p):
 def p_error(p):
     global flag_for_error
     flag_for_error = True
-    print("Syntax error: '%s' on line %d" % (p.value, p.lexer.lineno))
+    print_error("Syntax error: '%s' on line %d" % (p.value, p.lexer.lineno))
 
 # Build the parser
 parser = yacc.yacc()
@@ -186,7 +194,12 @@ def read_file(file_path):
         return file.read()
 
 if __name__ == "__main__":
-    data = read_file(args.input)
+    print_debug('Input:', args.input)
+    print_debug('Output:', args.output)
+    print_debug('Debug:', args.debug)
+    print_debug('Name:', args.name)
+    
+    data = read_file(args.input) if args.input != '-' else sys.stdin.read()
 
     # Give the lexer some input
     lexer.input(data)
