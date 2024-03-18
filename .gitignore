@@ -1,6 +1,7 @@
 *.test.*
 *.out
 parsetab.py
+out.xml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
