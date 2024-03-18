@@ -220,7 +220,7 @@ if __name__ == "__main__":
     
     print_debug("Parsing...")
     
-    result = parser.parse(data, lexer=lexer)
+    parser.parse(data, lexer=lexer)
     if flag_for_error:
         print_debug("Parsing failed")
     else:
