@@ -1,0 +1,5 @@
+# Reads two integers and prints their difference (first - second).
+READINT a
+READINT b
+SUB result a b
+PRINTLN result

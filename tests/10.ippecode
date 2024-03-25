@@ -1,0 +1,13 @@
+# Prints the first 5 numbers of the Fibonacci sequence: 0 1 1 2 3
+MOV a 0
+MOV b 1
+PRINTLN a
+PRINTLN b
+MOV count 2
+LABEL @FIB_LOOP
+ADD temp a b
+PRINTLN temp
+MOV a b
+MOV b temp
+ADD count count 1
+JUMPIFLT @FIB_LOOP count 5

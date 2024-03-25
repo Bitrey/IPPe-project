@@ -1,0 +1,5 @@
+# Example with bad operation code in the second instruction, so it returns 11 (see *.rc file)
+
+MOV counter 0
+GIVEME counter
+ 

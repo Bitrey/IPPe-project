@@ -1,0 +1,8 @@
+# Prints "Hi" 3 times using a loop.
+MOV counter 0
+LABEL @LOOP
+JUMPIFEQ @ENDLOOP counter 3
+PRINTLN "Hi"
+ADD counter counter 1
+JUMP @LOOP
+LABEL @ENDLOOP

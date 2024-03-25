@@ -1,5 +1,6 @@
 *.test.*
 *.out
+*.out.*
 parsetab.py
 out.xml
 

@@ -1,0 +1,8 @@
+# Example 2 in IPPeCode
+
+READINT y
+ADD x1  y   10
+
+PRINT "Hello\nWorld!"  # \n servers as a new line
+PRINT x1
+PRINT "\n"

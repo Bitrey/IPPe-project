@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+"""
+Alessandro Amella - xamella00
+IPPeCode parser
+"""
+
 import ply.lex as lex
 import ply.yacc as yacc
 import xml.etree.ElementTree as ET
@@ -8,11 +13,11 @@ from xml.sax.saxutils import escape
 import argparse
 import sys
 
-arg_parser = argparse.ArgumentParser(description='Tokenize a file')
-arg_parser.add_argument('input', type=str, help='File to tokenize')
-arg_parser.add_argument('output', nargs='?', type=str, help='Output file name', default='out.xml')
-arg_parser.add_argument('-d', '--debug', action='store_true', help='Print debug information')
-arg_parser.add_argument('-n', '--name', type=str, help='Program name')
+arg_parser = argparse.ArgumentParser(description='Tokenize and parse IPPeCode code into XML format.')
+arg_parser.add_argument('input', type=str, help='input file')
+arg_parser.add_argument('output', nargs='?', type=str, help='output file', default='out.xml')
+arg_parser.add_argument('-d', '--debug', action='store_true', help='print debug information')
+arg_parser.add_argument('-n', '--name', type=str, help='program name')
 args = arg_parser.parse_args()
 
 xml_declaration = '<?xml version="1.0" encoding="UTF-8"?>\n'

@@ -1,0 +1,5 @@
+# Reads two integers, divides the first by the second, and prints the result.
+READINT dividend
+READINT divisor
+DIV quotient dividend divisor
+PRINTLN quotient
