@@ -3,7 +3,7 @@
 *.out.*
 parsetab.py
 out.xml
-parser.tgz
+*.tgz
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
