@@ -1,4 +1,4 @@
-# Reads two numbers, calculates their average, and prints the result.
+# Reads two numbers, calculates their average, and prints the result
 READINT num1
 READINT num2
 ADD sum num1 num2

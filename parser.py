@@ -57,7 +57,7 @@ tokens = (
 
 # Regular expressions with enhanced parsing
 def t_OPCODE(t):
-    r'MOV|LABEL|ADD|SUB|MUL|DIV|READINT|READSTR|PRINT|PRINTLN|JUMPIFEQ|JUMPIFLT|JUMP|CALL|RETURN|PUSH|POP'
+    r'MOV|LABEL|ADD|SUB|MUL|DIV|READINT|READSTR|PRINTLN|PRINT|JUMPIFEQ|JUMPIFLT|JUMP|CALL|RETURN|PUSH|POP'
     return t
 
 def t_REGISTER(t):
@@ -94,7 +94,7 @@ t_ignore = ' \t'
 # Error handling 
 def t_error(t):
     global flag_for_error
-    print_error("Illegal character: %r on line %d" % (repr(t.value[0]), t.lexer.lineno))
+    print_error(f"Illegal character '{t.value[0]}' on line {t.lineno}")
     flag_for_error = True
     t.lexer.skip(1)
 
@@ -149,14 +149,17 @@ def p_tac(p):
     tac : OPCODE dst src1 src2
         | OPCODE dst src1
         | OPCODE dst
+        | OPCODE STRING src1
         | OPCODE STRING
     '''
     action = {'opcode': p[1]}
     if len(p) == 5:
-        action.update({'dst_type': 'variable', 'dst': p[2]['value'], 'src1_type': p[3]['type'], 'src1': p[3]['value'], 'src2_type': p[4]['type'], 'src2': p[4]['value']})
+        action.update({'dst_type': p[2]['type'], 'dst': p[2]['value'], 'src1_type': p[3]['type'], 'src1': p[3]['value'], 'src2_type': p[4]['type'], 'src2': p[4]['value']})
     elif len(p) == 4:
-        # Assuming first operand is always dst for simplicity; refine as needed
-        action.update({'dst_type': 'variable', 'dst': p[2]['value'], 'src1_type': p[3]['type'], 'src1': p[3]['value']})
+        if isinstance(p[2], dict):  # Operand is dst
+            action.update({'dst_type': p[2]['type'], 'dst': p[2]['value'], 'src1_type': p[3]['type'], 'src1': p[3]['value']})
+        else:  # Operand is STRING
+            action.update({'dst_type': 'string', 'dst': p[2], 'src1_type': p[3]['type'], 'src1': p[3]['value']})
     elif len(p) == 3:
         if isinstance(p[2], dict):  # Operand is dst
             action.update({'dst_type': p[2]['type'], 'dst': p[2]['value']})
@@ -189,7 +192,7 @@ def p_src2(p):
 def p_error(p):
     global flag_for_error
     flag_for_error = True
-    print_error("Syntax error: '%s' on line %d" % (p.value, p.lexer.lineno))
+    print_error(f"Unexpected token: {p.value} (type: {p.type})")
 
 # Build the parser
 parser = yacc.yacc()
@@ -206,12 +209,10 @@ if __name__ == "__main__":
     
     data = read_file(args.input) if args.input != '-' else sys.stdin.read()
 
-    # Give the lexer some input
+    # Tokenize
     lexer.input(data)
-    
     print_debug("Tokenizing...")
 
-    # Tokenize
     while not flag_for_error:
         tok = lexer.token()
         if not tok:

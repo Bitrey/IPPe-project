@@ -1,4 +1,4 @@
-# Reads an integer, doubles it, then prints it.
+# Reads an integer, doubles it, then prints it
 READINT num
 MUL result num 2
 PRINTLN result

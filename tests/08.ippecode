@@ -1,4 +1,4 @@
-# Prints "Hi" 3 times using a loop.
+# Prints "Hi" 3 times using a loop
 MOV counter 0
 LABEL @LOOP
 JUMPIFEQ @ENDLOOP counter 3
