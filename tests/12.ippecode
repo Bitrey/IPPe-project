@@ -1,0 +1,5 @@
+# Extract the first character from the string "Hello" and print it
+MOV str "Hello"
+MOV index 0
+GETAT char str index
+PRINTLN char

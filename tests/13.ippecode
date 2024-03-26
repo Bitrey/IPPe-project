@@ -1,0 +1,5 @@
+# Find and print the length of the string "Hello, World!"
+MOV str "Hello, World!"
+LEN length str
+PRINTLN "The length of the string is:"
+PRINTLN length

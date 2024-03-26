@@ -1,0 +1,5 @@
+# Convert integer 404 to a string and concatenate with " Error"
+MOV errorCode 404
+INTSTR errorCodeStr errorCode
+CONCAT message "Error Code: " errorCodeStr
+PRINTLN message

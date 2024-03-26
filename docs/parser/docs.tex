@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
-\usepackage[a4paper, total={6in, 9in}]{geometry}
+\usepackage[a4paper, total={6in, 10in}]{geometry}
 \setcounter{secnumdepth}{4}
 \usepackage{hyperref}
 \usepackage{color}
@@ -24,8 +24,6 @@ version={4.0},
 ]{doclicense}
 \pgfplotsset{compat=newest}
 \usetikzlibrary{arrows.meta, positioning}
-
-\definecolor{highlight}{rgb}{0.22,0.45,0.70}
 
 \title{Documentation for IPPeCode Parser}
 
@@ -49,12 +47,10 @@ version={4.0},
 \maketitle
 
 \section{Introduction}
-The script \texttt{parser.py} is designed to tokenize and parse IPPeCode code, converting it into an XML format. It utilizes the PLY (Python Lex-Yacc) library for lexical analysis (tokenization) and syntax analysis (parsing), and uses the Python Standard Library's XML modules for generating and managing XML output.
+The script \texttt{parser.py} is designed to tokenize and parse IPPeCode code, converting it into an XML format. It utilizes the PLY (Python Lex-Yacc) library for lexical analysis (tokenization) and syntax analysis (parsing), and uses the Python Standard Library's XML modules for managing XML.
 
 \section{Lexical Analysis}
 Lexical analysis is performed using PLY's \texttt{lex} module. The script defines a set of tokens which includes the language operands, along with regular expressions for each.
-
-Special tokens and actions are defined for handling whitespace, newline characters to track line numbers, and illegal characters to flag errors.
 
 \section{Syntax Analysis}
 For syntax analysis, the script uses PLY's \texttt{yacc} module. Production rules in the script define the structure of valid IPPeCode syntax, beginning with a top-level \texttt{program} rule that consists of a list of three-address codes (TAC) elements.
@@ -67,7 +63,10 @@ The script generates XML output based on the parsed data. It constructs an XML d
 \section{Debugging and Error Handling}
 The script offers debug mode for detailed process logging, including tokenization and parsing steps, via command-line arguments. Additionally, it implements error handling mechanisms to report illegal characters during lexing and unexpected tokens during parsing.
 
+\section{Extensions}
+Within the project, support for string variables has been implemented to enhance the functionality of the parser: OPCODES \texttt{CONCAT}, \texttt{GETAT}, \texttt{LEN}, \texttt{STRINT}, and \texttt{INTSTR} have been added, allowing operations involving string concatenation, accessing characters by index, length determination, and conversions between strings and integers.
+
 \section{Conclusion}
-This script is a robust implementation of the IPPeCode parser which, by specifying a context-free grammar (CFG) and making an abstract syntax tree (AST), allows easy future expansion with an expanded set of instructions.
+This is a robust implementation of the IPPeCode parser which, by building a context-free grammar and an abstract syntax tree, allows easy future expansion with an expanded set of instructions.
 
 \end{document}

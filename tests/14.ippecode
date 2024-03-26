@@ -1,0 +1,6 @@
+# Convert string "100" to an integer and add 42 to it
+MOV strNum "100"
+STRINT num strNum
+ADD result num 42
+PRINTLN "Result after adding 42:"
+PRINTLN result

@@ -52,12 +52,12 @@ def print_error(*_args, **kwargs):
 
 # List of token names
 tokens = (
-    'OPCODE', 'REGISTER', 'INTEGER', 'LABEL', 'COMMENT', 'STRING' 
+    'OPCODE', 'REGISTER', 'INTEGER', 'LABEL', 'COMMENT', 'STRING'
 )
 
 # Regular expressions with enhanced parsing
 def t_OPCODE(t):
-    r'MOV|LABEL|ADD|SUB|MUL|DIV|READINT|READSTR|PRINTLN|PRINT|JUMPIFEQ|JUMPIFLT|JUMP|CALL|RETURN|PUSH|POP'
+    r'MOV|LABEL|ADD|SUB|MUL|DIV|READINT|READSTR|PRINTLN|PRINT|JUMPIFEQ|JUMPIFLT|JUMP|CALL|RETURN|PUSH|POP|CONCAT|GETAT|LEN|STRINT|INTSTR'
     return t
 
 def t_REGISTER(t):
@@ -150,17 +150,32 @@ def p_tac(p):
         | OPCODE dst src1
         | OPCODE dst
         | OPCODE STRING src1
+        | OPCODE dst STRING
         | OPCODE STRING
+        | OPCODE dst src1 STRING
+        | OPCODE dst STRING src2
     '''
     action = {'opcode': p[1]}
-    if len(p) == 5:
-        action.update({'dst_type': p[2]['type'], 'dst': p[2]['value'], 'src1_type': p[3]['type'], 'src1': p[3]['value'], 'src2_type': p[4]['type'], 'src2': p[4]['value']})
-    elif len(p) == 4:
+    if len(p) == 5: # case (OPCODE dst src1 src2)
+        if isinstance(p[2], dict): # Operand is dst
+            if isinstance(p[3], dict): # Operand is src1
+                if isinstance(p[4], dict): # Operand is src2
+                    action.update({'dst_type': p[2]['type'], 'dst': p[2]['value'], 'src1_type': p[3]['type'], 'src1': p[3]['value'], 'src2_type': p[4]['type'], 'src2': p[4]['value']})
+                else: # Operand is STRING
+                    action.update({'dst_type': p[2]['type'], 'dst': p[2]['value'], 'src1_type': p[3]['type'], 'src1': p[3]['value'], 'src2_type': 'string', 'src2': p[4]})
+            else: # Operand is STRING
+                action.update({'dst_type': p[2]['type'], 'dst': p[2]['value'], 'src1_type': 'string', 'src1': p[3], 'src2_type': p[4]['type'], 'src2': p[4]['value']})
+        else: # Operand is STRING
+            action.update({'dst_type': 'string', 'dst': p[2], 'src1_type': p[3]['type'], 'src1': p[3]['value'], 'src2_type': p[4]['type'], 'src2': p[4]['value']})
+    elif len(p) == 4: # case (OPCODE dst src1) or (OPCODE dst STRING) or (OPCODE STRING src1)
         if isinstance(p[2], dict):  # Operand is dst
-            action.update({'dst_type': p[2]['type'], 'dst': p[2]['value'], 'src1_type': p[3]['type'], 'src1': p[3]['value']})
+            if isinstance(p[3], dict): # Operand is src1
+                action.update({'dst_type': p[2]['type'], 'dst': p[2]['value'], 'src1_type': p[3]['type'], 'src1': p[3]['value']})
+            else:  # Operand is STRING
+                action.update({'dst_type': p[2]['type'], 'dst': p[2]['value'], 'src1_type': 'string', 'src1': p[3]})
         else:  # Operand is STRING
             action.update({'dst_type': 'string', 'dst': p[2], 'src1_type': p[3]['type'], 'src1': p[3]['value']})
-    elif len(p) == 3:
+    elif len(p) == 3: # case (OPCODE dst) or (OPCODE STRING)
         if isinstance(p[2], dict):  # Operand is dst
             action.update({'dst_type': p[2]['type'], 'dst': p[2]['value']})
         else:  # Operand is STRING

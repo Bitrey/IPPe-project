@@ -1,0 +1,5 @@
+# Concatenate two strings "Hello" and ", World!" and print the result
+MOV str1 "Hello"
+MOV str2 ", World!"
+CONCAT result str1 str2
+PRINTLN result
